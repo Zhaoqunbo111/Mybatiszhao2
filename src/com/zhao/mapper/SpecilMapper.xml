@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhao.mapper.SpecilMapper">
+    <cache/>
+    <resultMap id="myResultMap" type="specli">
+        <id property="sid" column="spilinfoid"/>
+
+        <result property="did" column="spilinfoid"/>
+        <result property="scode" column="spilinfocode"/>
+        <result property="sname" column="spilinfoname"/>
+        <result property="saim" column="spilinfoaim"/>
+        <result property="sprodire" column="spilinfoprodire"/>
+    </resultMap>
+    <select id="findSpecliByID" parameterType="int" resultMap="myResultMap" >
+        select * from specilinfo
+        where spilinfoid=#{id}
+    </select>
+    <select id="findSpecliByID2" parameterType="int" resultMap="myResultMap" useCache="false">
+        select * from specilinfo
+        where spilinfoid=#{id}
+    </select>
+    <select id="findAllSplit2"  resultMap="myResultMap">
+            select * from specilinfo
+            limit #{start},#{pageSize}
+     </select>
+    <select id="findAllSplit3" resultMap="myResultMap" parameterType="java.util.Map">
+          select * from  specilinfo where ${colName} like concat('%',#{keyword},'%')
+          limit #{start},#{pageSize}
+    </select>
+    <select id="findAllSplit4" resultMap="myResultMap" resultType="com.zhao.po.Specli">
+          select * from  specilinfo where 1=1
+            <if test="#{colName}!=null and #{keyword}!=null">
+            and ${colname} like concat('%',#{keyword},'%')
+            </if>
+            <if test="#{start}!=null and #{pageSize}!=null">
+                limit #{start}.#{pageSize}
+            </if>
+    </select>
+
+
+</mapper>
